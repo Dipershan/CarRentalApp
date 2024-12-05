@@ -8,7 +8,7 @@ const userRoutes =  require("./user.route");
     });
     
     router.use("/api/users" , userRoutes);
-    // router.use("/booking" , bookingRoutes  )
+    // router.use("/bookcar" , bookingRoutes  )
 
 
 module.exports = router;

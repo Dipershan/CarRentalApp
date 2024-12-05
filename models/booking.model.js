@@ -10,12 +10,11 @@ const BookingSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User'
     },  
-     bookedTimeSlots : [
+     bookedTimeSlots : 
         {
-        from:{type: String , required: true},
-        to :{type:String ,  required: true }
-        }
-    ],
+        from:{type: String },
+        to :{type:String }
+        },
     totalHours : {type: Number},
     totalAmount: {
         type:Number,
