@@ -31,8 +31,39 @@ const login  = async(req, res) =>{
 };
 
 
+const resetUserPassword = async (req, res) => {
+    const { email, password } = req.body;
+  
+    try {
+      await userService.resetUserPassword(email, password);
+  
+      res.json({ message: "Password reset successful!" });
+    } catch (error) {
+      res
+        .status(401)
+        .json({ message: error.message || "An error occurred during password reset" });
+    }
+  };
+  
+const deleteUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+      await userService.deleteUser(userId);
+      res.json({ message: "User deleted successfully!" });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ message: error.message || "An error occurred while deleting the user" });
+    }
+  };
+  
+  
+
 
 module.exports = {
     register,
     login,
+    resetUserPassword,
+    deleteUser
+    
 }
