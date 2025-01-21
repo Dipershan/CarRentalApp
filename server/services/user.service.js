@@ -20,25 +20,24 @@ const createUser =  async(body)=>{
 };
 
 //Login User
-const loginUser = async(email , password) =>{
-    try {
-        const user = await User.findOne({email: email});
-        if(!user){
-            throw new Error("Incorrect Email or Password");
-        }                
-        const isPasswordCorrect =  await user.isPasswordMatch(password);
-        if(!isPasswordCorrect){
-            throw new Error("Incorrect email or password")
-        }
-        console.log('object' , user);
-        return user;
-
-    } catch (error) {
-        console.log("Login error:" ,error );
-        throw error;
-    }
-    
+const loginUser = async (email, password) => {
+  try {      
+      const user = await User.findOne({ email: email });
+      if (!user) {
+          throw new Error("Incorrect Email or Password");          
+      }      
+      const isPasswordValid = await user.isPasswordMatch(password);
+      if (!isPasswordValid) {
+          throw new Error("Incorrect Email or Password");
+      }      
+      console.log('User authenticated:', user);
+      return user;
+  } catch (error) {
+      console.error("Login error:", error.message);
+      throw error;
+  }
 };
+
 
 //To get all user
 const getAllUsers =  async ()=>{
@@ -50,7 +49,6 @@ const getAllUsers =  async ()=>{
       throw error;
     }
 };
-
 
 const resetUserPassword = async (email, password) => {
     try {
@@ -99,6 +97,8 @@ const deleteUser = async (userId) => {
 module.exports ={
     createUser,
     loginUser,
+    getAllUsers,
     resetUserPassword,
-    deleteUser
+    deleteUser,
+    
 }

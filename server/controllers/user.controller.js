@@ -1,6 +1,6 @@
 const userService = require("../services/user.service");
 
-
+//register user
 const register =  async (req,  res)=>{
     try {
         await userService.createUser(req.body);
@@ -17,6 +17,7 @@ const register =  async (req,  res)=>{
     }
 }
 
+//login
 const login  = async(req, res) =>{
     const {email , password} =  req.body;
     try {
@@ -30,7 +31,20 @@ const login  = async(req, res) =>{
     }
 };
 
+//listUsers
+const listUsers = async (req, res) => {
+  try {
+    const users = await userService.getAllUsers();
 
+    res.json({ message: "Users retrieved successfully!", users });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: error.message || "An error occurred while retrieving users" });
+  }
+};
+
+//resetUserPassword
 const resetUserPassword = async (req, res) => {
     const { email, password } = req.body;
   
@@ -44,7 +58,9 @@ const resetUserPassword = async (req, res) => {
         .json({ message: error.message || "An error occurred during password reset" });
     }
   };
+ 
   
+//Delete User
 const deleteUser = async (req, res) => {
     const { userId } = req.params;
     try {
@@ -64,6 +80,7 @@ module.exports = {
     register,
     login,
     resetUserPassword,
-    deleteUser
+    deleteUser,
+    listUsers
     
 }
