@@ -50,6 +50,7 @@ const getAllUsers =  async ()=>{
     }
 };
 
+//resetpassword
 const resetUserPassword = async (email, password) => {
     try {
       const user = await User.findOne({ email: email });

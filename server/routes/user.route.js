@@ -9,3 +9,4 @@ router.route("/delete/:id").delete(userController.deleteUser);
 router.route("/reset-password").patch(userController.resetUserPassword);
 
 module.exports =  router;
+    
