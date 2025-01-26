@@ -1,10 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { composeWithDevTools } from 'redux-devtools-extension';
-import reducer from './path_to_reducer'; // Adjust this path to your reducer
+import carsReducer from './reducers/carsReducer';
+import alertsReducer from './reducers/alertsReducers';
 
 const store = configureStore({
-  reducer,
-  devTools: composeWithDevTools(),
+  reducer: {
+    carsReducer,
+    alertsReducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware(), // Thunk is included by default
+  devTools: 'production', // DevTools enabled in development
 });
 
 export default store;
