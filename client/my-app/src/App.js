@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import BookingCar from './pages/BookingCar';
 import Home from './pages/Home';
+import "antd/dist/reset.css";
+
 
 function App() {
   return (

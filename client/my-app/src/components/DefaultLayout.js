@@ -3,7 +3,7 @@ import React from 'react'
 const DefaultLayout = (props) => {
   return (
     <div>
-        <div className='header'>
+        <div className='header bs1'>
             <div className="d-flex justify-content-between">
                 <h1>CarRental</h1>
                 <button>user</button>
