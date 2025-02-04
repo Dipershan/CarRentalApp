@@ -15,6 +15,12 @@ code {
 .bs1{
   box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
+.spinner{
+  position: absolute;;
+  top: 50%;
+  left: 50%;
+  z-index: 1;
+}
 h1{
   font-size: 25px;
   font-weight: bold;
@@ -42,9 +48,28 @@ p{
   min-height: 90vh;
   /* background-color: azure; */
 } 
-
-.carimage{
+.car{
+  border-radius: 5px;
+  margin-top: 100px;
+  height: 160px;
+  transition: 0.3s;
+}
+.car:hover{
+  height: 220px;
+}
+.car:hover> .car-content{
+  opacity: 1;
+  transform: translateY(-40px);
+}
+.carimg{
   height: 180px;
   width: auto;
   border-radius: 5px;
+  transform: translateY(-50px);
 }
+.car-content{
+  transform: translateY(-200px);
+  opacity: 0;  
+  transition: 0.3s;
+}
+

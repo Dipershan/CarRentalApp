@@ -5,7 +5,7 @@ export const getAllCars = () => async (dispatch) => {
 
   try {
     const { data } = await axios.get("/api/cars/getAllCars");
-    dispatch({ type: "GET_ALL_CARS", payload: data }); // ✅ Fixed
+    dispatch({ type: "GET_ALL_CARS", payload: data }); 
   } catch (error) {
     console.log(error);
   }
