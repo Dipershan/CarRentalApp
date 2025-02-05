@@ -28,7 +28,10 @@ const Login = () => {
           <Form layout='vertical' className='login-form p-5' onFinish={onFinish}>  
             <h1>Login</h1>       
             <hr />    
-              < Form.Item name='username' label='Username' rules={[{required: true}]}>
+              < Form.Item name='email' label='Email' rules={[
+              { required: true, message: "Email is required" }, 
+              { type: "email", message: "Please enter a valid email!" }
+  ]}>
                   <Input/>
               </ Form.Item>
               < Form.Item name='password' label='Password' rules={[{required: true}]}>
@@ -38,6 +41,8 @@ const Login = () => {
               <button className='btn1 mt-2 '>Login</button>
               <hr />
               <Link to="/register">Not Registered? Click Here </Link>
+              <hr />
+              <Link to="/register">Forgot Password? </Link>
           </Form>
         </Col>
       </Row>
