@@ -36,8 +36,12 @@ p{
   box-shadow: none !important;
   background-color: white !important;
   color: coral !important;
-  border: 1px solid coral;
+  border: 1px solid rgb(20, 11, 8);
+  padding: 5px 10px!important;
 
+}
+button{
+  padding: 3px 10px!important  ;
 }
 .header{
   padding: 10px;
@@ -72,4 +76,46 @@ p{
   opacity: 0;  
   transition: 0.3s;
 }
+.login{
+  background-color: black;
+  padding-top: 50px;
+  min-height: 100vh;
+}
 
+.login label , .login h1{
+  color: rgb(214, 189, 189) !important;
+  opacity: 0.6;
+}
+.login-form{
+  background-color: #1F1F1F;
+}
+.login-form input{
+  background-color: #333333 !important;
+  border: none !important;
+  color: white;
+  opacity:0.5;
+}
+.img-large{
+  width: 100%;
+  height: auto;  
+  max-height: 500px;  
+  object-fit: cover;  
+  border-radius: 10px; 
+  margin-top: 110px;
+}
+
+.login-logo{
+  position: absolute;
+  left:55%;
+  right: 45%;
+  top:45%;
+  bottom: 50%;
+  transform: translateY(-50%, 50%);
+  font-size: 50px;
+  opacity: 0.5 !important;
+  
+}
+.login a {
+  color: white !important;
+  opacity: 0.5;
+}
