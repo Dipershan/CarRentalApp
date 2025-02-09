@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt  = require("bcrypt");
+const jwt = require("jsonwebtoken")
 
 //Register User
 const createUser =  async(body)=>{
@@ -31,6 +32,14 @@ const loginUser = async (email, password) => {
           throw new Error("Incorrect Email or Password");
       }      
       console.log('User authenticated:', user);
+        
+        const token = jwt.sign(
+          { id: user._id, email: user.email },
+          process.env.JWT_SECRET, 
+          { expiresIn: "1h" } 
+      );
+
+      return { user, token };
       return user;
   } catch (error) {
       console.error("Login error:", error.message);
@@ -85,7 +94,7 @@ const deleteUser = async (userId) => {
         throw new Error("User not found");
       }
   
-      await User.findByIdAndDelete(userId);
+      await User.findByIdAndDelete  (userId);
       return { message: "User deleted successfully!" };
     } catch (error) {
       console.error("Error deleting user:", error);

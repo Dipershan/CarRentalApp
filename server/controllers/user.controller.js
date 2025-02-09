@@ -21,8 +21,13 @@ const register =  async (req,  res)=>{
 const login  = async(req, res) =>{
     const {email , password} =  req.body;
     try {
-        const user =  userService.loginUser(email , password);
-        res.status(200).send({message: "Login Successfully"});
+      const { user, token } = await userService.loginUser(email, password); 
+
+      res.status(200).send({
+          message: "Login Successful",
+          user: { id: user._id, email: user.email },
+          token,
+      });
     } catch (error) {
         console.log(error);
         res
