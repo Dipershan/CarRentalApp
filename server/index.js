@@ -26,5 +26,5 @@ app.get("/" , (req , res)=>{
 });
 
 app.listen(PORT , ()=>{
-    console.log(`Application is not runnning on port ${PORT}`);
+    console.log(`Application is  runnning on port ${PORT}`);
 });

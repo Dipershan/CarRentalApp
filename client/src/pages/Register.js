@@ -7,7 +7,7 @@ import { userRegister } from '../redux/actions/userActions';
 
 const Register = () => {
 
-   const dispatch = useDispatch();
+   const dispatch = useDispatch();  
  
    const onFinish =(values)=>{
      dispatch(userRegister(values))
