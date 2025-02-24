@@ -1,23 +1,16 @@
-require("dotenv").config();
-const mongoose  = require("mongoose");
+const mongoose = require("mongoose");
 
-function connectDB(){
-    mongoose.connect(process.env.MONGO_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        serverSelectionTimeoutMS: 30000, // Adjust timeout (30 seconds)
-        family: 4 // Use IPv4 to bypass DNS IPv6 issues
-      })
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log("MongoDB Connected Successfully!");
+    } catch (error) {
+        console.error("MongoDB Connection Failed:", error);
+        process.exit(1);
+    }
+};
 
-        const connection = mongoose.connection
-        connection.on('connected ' , ()=>{
-            console.log("Mongo DB Connection Successfully");
-        })
-        connection.on('error',()=>{
-            console.log('Mongo DB Connection Error');
-        })
-    
-}
-connectDB()
-
-module.exports =  mongoose
+module.exports = connectDB;

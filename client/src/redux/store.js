@@ -8,8 +8,8 @@ const store = configureStore({
     alertsReducer
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware(), // Thunk is included by default
-  devTools: 'production', // DevTools enabled in development
+    getDefaultMiddleware(),
+  devTools: 'production',
 });
 
 export default store;

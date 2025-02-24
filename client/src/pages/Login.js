@@ -1,14 +1,15 @@
 import React from 'react';
 import {Row ,  Col , Form , Input} from "antd";
 import { Link } from 'react-router-dom';
-import {useDispatch} from 'react-redux';
+import {useDispatch , useSelector} from 'react-redux';
+import Spinner from '../components/Spinner';
 import { userLogin } from '../redux/actions/userActions';
 
 
 const Login = () => {
 
   const dispatch = useDispatch();
-
+  const {loading} = useSelector(state=>state.alertsReducer);
   const onFinish =(values)=>{
     dispatch(userLogin(values))
     console.log(values)
@@ -16,8 +17,8 @@ const Login = () => {
   
   return (
     <div className='login'>
-      <Row gutter={16} className='d-flex align-items-center'>
-
+      {loading && (<Spinner />)}
+      <Row gutter={16} className='d-flex align-items-center'>      
         <Col lg={16} style={{position:'relative'}}>
           <img src="https://www.shutterstock.com/shutterstock/videos/1097136775/thumb/8.jpg?ip=x480" 
           className='img-large' />

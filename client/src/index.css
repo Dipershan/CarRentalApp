@@ -57,6 +57,15 @@ button{
   margin-top: 100px;
   height: 160px;
   transition: 0.3s;
+  /* position: relative;
+  border-radius: 10px;
+  margin-top: 50px;
+  height: 220px;
+  width: 100%;
+  transition: 0.3s ease-in-out;
+  overflow: hidden; /* Prevents content from spilling out */
+  /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); */
+  /* background: white; */ 
 }
 .car:hover{
   height: 220px;
@@ -66,15 +75,17 @@ button{
   transform: translateY(-40px);
 }
 .carimg{
-  height: 180px;
+  height: 150px;
   width: auto;
-  border-radius: 5px;
+  border-radius: 10px 10px 0 0;
   transform: translateY(-50px);
+  object-fit: cover;
 }
 .car-content{
   transform: translateY(-200px);
   opacity: 0;  
   transition: 0.3s;
+  
 }
 .login{
   background-color: black;

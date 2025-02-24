@@ -1,5 +1,8 @@
 import axios from "axios";
 import { message } from "antd";
+// import { useNavigate } from "react-router-dom";
+
+// const navigate = useNavigate();
 
 
 
@@ -8,7 +11,7 @@ export const userLogin = (reqObj) => async dispatch => {
   dispatch({ type: "LOADING", payload: true });
 
   try {
-      const response = await axios.post('api/users/login', reqObj);
+      const response = await axios.post('http://localhost:7000/api/users/login', reqObj);
 
       
       const token = response.data.token; 
@@ -42,7 +45,7 @@ export const getUserData = () => async dispatch => {
   setAuthToken(token); // Set the token for all subsequent requests
 
   try {
-      const response = await axios.get('/api/users/me'); // Example protected endpoint
+      const response = await axios.get('http://localhost:7000/api/users/me'); // Example protected endpoint
       dispatch({ type: "GET_USER_DATA", payload: response.data });
   } catch (error) {
       console.error(error);
@@ -73,54 +76,43 @@ export const userRegister = (reqObj) => async dispatch => {
   dispatch({ type: "LOADING", payload: true });
 
   try {
-      const response = await axios.post('api/users/signup', reqObj);
+      
+      const response = await axios.post('http://localhost:7000/api/users/signup', reqObj);
+      message.success('Registration successfull')
+      setTimeout(() => {
+          window.location.href='/login'
+       
+      }, 500);
+     
+      dispatch({type: 'LOADING' , payload:false})
+    //   if (response.status === 200) { 
+    //       message.success(response.data.message);
+    //       dispatch({ type: "LOADING", payload: false });          
 
-      if (response.status === 200) { 
-          message.success(response.data.message); // Access the message from the response
-          dispatch({ type: "LOADING", payload: false });
-
-          // Decide if you want to automatically log the user in here (as discussed before)
-          // If yes, dispatch the userLogin action:
-          // dispatch(userLogin(reqObj)); // Assuming reqObj has the login details
-      } else {
-          // Handle other successful status codes if needed
-          message.success("Registration Successful");
-          dispatch({ type: "LOADING", payload: false });
-      }
+    //   } else {
+     
+    //       message.success("Registration Successful");
+    //       dispatch({ type: "LOADING", payload: false });
+    //   }
 
   } catch (error) {
       console.error("Registration Error:", error);
 
       dispatch({ type: "LOADING", payload: false });
 
-      if (error.response) { // Check if the server returned an error response
-          message.error(error.response.data.message); // Access the error message from the backend
-      } else if (error.request) { // Check if the request was made but no response was received
+      if (error.response) { 
+          message.error(error.response.data.message);
+      } else if (error.request) { 
           message.error("No response received from the server.");
-      } else { // Otherwise, it's a client-side error
+      } else { 
           message.error("An error occurred during registration.");
       }
   }
 };
 
-// export const userRegister =(reqObj)=>async dispatch=>{
-//     dispatch({ type: "LOADING", payload: true });
-
-//     try {
-//       const response = await axios.post('api/users/signup' , reqObj)      
-//       message.success("Login Sucess");
-//       dispatch({ type: "LOADING", payload: false }); 
-//     } catch (error) {
-//       console.log(error);
-//       message.error("Invalid Credentials");
-//       dispatch({ type: "LOADING", payload: false });
-//     }
-  
-   
-// }
 
 
 export const logoutUser = () => dispatch => {
   localStorage.removeItem('token');
-  dispatch({ type: "LOGOUT" }); // Dispatch a logout action to reset Redux state
+  dispatch({ type: "LOGOUT" }); 
 };

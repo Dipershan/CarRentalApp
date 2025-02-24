@@ -7,7 +7,6 @@ const PORT = process.env.PORT
 const indexRouter =  require("./routes/index");
 const cors =  require("cors");
 
-
 mongoose.connect(
     process.env.DB_URL 
 ).then(()=>{

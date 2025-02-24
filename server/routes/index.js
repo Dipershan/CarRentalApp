@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const userRoutes =  require("./user.route");
+const carRoutes =  require("./car.route");
 // const bookingRoutes = require("./booking.route");
 
     router.get("/api" , async(req, res , next)=>{
@@ -8,6 +9,7 @@ const userRoutes =  require("./user.route");
     });
     
     router.use("/api/users" , userRoutes);
+    router.use("/api/cars" , carRoutes);
     // router.use("/bookcar" , bookingRoutes  )
 
 

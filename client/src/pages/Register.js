@@ -1,14 +1,15 @@
 import React from 'react';
 import {Row ,  Col , Form , Input} from "antd";
 import {Link} from "react-router-dom";
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import Spinner from '../components/Spinner';
 import { userRegister } from '../redux/actions/userActions';
 
 
 const Register = () => {
 
    const dispatch = useDispatch();  
- 
+   const {loading} = useSelector(state=>state.alertsReducer);
    const onFinish =(values)=>{
      dispatch(userRegister(values))
      console.log(values)
@@ -16,6 +17,7 @@ const Register = () => {
 
   return (
     <div className='login'>
+      {loading && (<Spinner />)}
       <Row gutter={16} className='d-flex align-items-center'>
 
         <Col lg={16} style={{position:'relative'}}>
@@ -41,9 +43,9 @@ const Register = () => {
               < Form.Item name='password' label='Password' rules={[{required: true}]}>
                   <Input/>
               </ Form.Item>
-              < Form.Item name='cpassword' label='Confirm Password' rules={[{required: true}]}>
+              {/* < Form.Item name='cpassword' label='Confirm Password' rules={[{required: true}]}>
                   <Input/>
-              </ Form.Item>
+              </ Form.Item> */}
               
               <button className='btn1'>Register</button>
               <hr />
