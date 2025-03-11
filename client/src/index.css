@@ -24,12 +24,12 @@ code {
 h1{
   font-size: 25px;
   font-weight: bold;
-  color: coral;
+  color: rgb(29, 13, 7);
 }
 p{
   margin: 5px !important;
   font-weight: bold ;
-  color: coral;
+  color: rgb(17, 14, 13);
 
 }
 .btn1{
@@ -46,6 +46,14 @@ button{
 .header{
   padding: 10px;
   
+}
+.header .ant-btn{
+  box-shadow: none !important;
+  background-color : white !important;
+  color: orangered !important;
+  border: 1px solid orangered !important;
+  padding: 5px 15px !important;
+  outline: none !important;
 }
 
 .content{
@@ -129,4 +137,40 @@ button{
 .login a {
   color: white !important;
   opacity: 0.5;
+}
+
+.carimg2{
+  height: 400px;
+  border-radius: 10px;
+  width: auto;
+}
+.action-button {
+  background-color: #ff6f61;
+  color: #fff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #ff5647;
+}
+.modal-buttons {
+  text-align: right;
+  margin-top: 15px;
+}
+.driver-checkbox {
+  margin-top: 10px;
+}
+
+
+svg{
+  height:20px !important;
+  width : 20px !important;
+}
+a{
+  color: rgb(31, 27, 25) !important;
 }

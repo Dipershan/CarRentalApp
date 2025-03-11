@@ -21,7 +21,8 @@ const Login = () => {
       <Row gutter={16} className='d-flex align-items-center'>      
         <Col lg={16} style={{position:'relative'}}>
           <img src="https://www.shutterstock.com/shutterstock/videos/1097136775/thumb/8.jpg?ip=x480" 
-          className='img-large' />
+          className='img-large'
+          alt="car pic"  />
           <h1 className='login-logo'>RevRent</h1>
         </Col>
 

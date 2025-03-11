@@ -7,30 +7,51 @@ import { message } from "antd";
 
 
 
-export const userLogin = (reqObj) => async dispatch => {
-  dispatch({ type: "LOADING", payload: true });
+export const userLogin=(reqObj)=>async dispatch=>{
+    
+  dispatch({type: 'LOADING' , payload:true})
 
   try {
-      const response = await axios.post('http://localhost:7000/api/users/login', reqObj);
+      const response = await axios.post('http://localhost:7000/api/users/login' , reqObj)
+      localStorage.setItem('user' , JSON.stringify(response.data))
+      message.success('Login success')
+      dispatch({type: 'LOADING' , payload:false})
+      setTimeout(() => {
+          window.location.href='/'
+       
+      }, 500);
+  } catch (error) {
+      console.log(error)
+      message.error('Something went wrong')
+      dispatch({type: 'LOADING' , payload:false})
+  }
+}
+
+
+// export const userLogin = (reqObj) => async dispatch => {
+//   dispatch({ type: "LOADING", payload: true });
+
+//   try {
+//       const response = await axios.post('http://localhost:7000/api/users/login', reqObj);
 
       
-      const token = response.data.token; 
+//       const token = response.data.token; 
 
      
-      localStorage.setItem('token', token);
+//       localStorage.setItem('token', token);
 
 
-      localStorage.setItem('user', JSON.stringify(response.data.user)); 
+//       localStorage.setItem('user', JSON.stringify(response.data.user)); 
 
-      dispatch({ type: "LOADING", payload: false });
-      message.success("Login Successful");
+//       dispatch({ type: "LOADING", payload: false });
+//       message.success("Login Successful");
 
-  } catch (error) {
-      console.error(error);
-      message.error("Invalid Credentials");
-      dispatch({ type: "LOADING", payload: false });
-  }
-};
+//   } catch (error) {
+//       console.error(error);
+//       message.error("Invalid Credentials");
+//       dispatch({ type: "LOADING", payload: false });
+//   }
+// };
 
 export const setAuthToken = (token) => {
   if (token) {
@@ -78,6 +99,7 @@ export const userRegister = (reqObj) => async dispatch => {
   try {
       
       const response = await axios.post('http://localhost:7000/api/users/signup', reqObj);
+      console.log(response.data); 
       message.success('Registration successfull')
       setTimeout(() => {
           window.location.href='/login'
