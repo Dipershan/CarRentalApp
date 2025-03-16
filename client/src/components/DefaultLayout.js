@@ -1,70 +1,67 @@
-import React from 'react'
-import {  Dropdown, Button , Row , Col } from "antd";
-import {Link} from 'react-router-dom'
+import React from "react";
+import { Dropdown, Button, Row, Col } from "antd";
+import { Link } from "react-router-dom";
+import "../index.css"; // ✅ Import global styles
 
 const DefaultLayout = (props) => {
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const menu = {
     items: [
+      { key: "1", label: <Link to="/">🏠 Home</Link> },
+      { key: "2", label: <Link to="/userbookings">📅 My Bookings</Link> },
+      { key: "3", label: <Link to="/admin">⚙️ Admin</Link> },
       {
-        key: '1',
-        label: <a href="/">Home</a>,
-      },
-      {
-        key: '2',
-        label: <a href="/userbookings">Bookings</a>,
-      },
-      {
-        key: '3',
-        label: <a href="/admin">Admin</a>,
-      },
-      {
-        key: '4',
+        key: "4",
         label: (
           <span
-            style={{ color: 'orangered' }}
+            className="logout-btn"
             onClick={() => {
-              localStorage.removeItem('user');
-              window.location.href = '/login';
+              localStorage.removeItem("user");
+              window.location.href = "/login";
             }}
           >
-            Logout
+            🚪 Logout
           </span>
         ),
       },
     ],
   };
-  
+
   return (
     <div>
-    <div className="header bs1">
-        <Row gutter={16} justify='center'>
-            <Col lg={20} sm={24} xs={24}>
-            <div className="d-flex justify-content-between">
-           <h1 ><b><Link to='/' style={{color:'black'}}>RevCar</Link></b></h1>
+      {/* Header */}
+      <div className="header">
+        <Row gutter={16} justify="center">
+          <Col lg={20} sm={24} xs={24}>
+            <div className="navbar">
+              <h1 className="logo">
+                <Link to="/" className="logo-text">
+                  Rev<span className="highlight">Car</span>
+                </Link>
+              </h1>
 
-        <Dropdown menu={menu} placement="bottom">
-          <Button>{user.username}</Button>
-        </Dropdown>
-      </div>
-            </Col>
+              <Dropdown menu={menu} placement="bottom">
+                <Button className="user-btn">
+                  {user?.username || "User"}
+                </Button>
+              </Dropdown>
+            </div>
+          </Col>
         </Row>
-      
+      </div>
+
+      {/* Content */}
+      <div className="content">{props.children}</div>
+
+      {/* Footer */}
+      <div className="footer">
+        <hr />
+        <p>Designed and Developed By</p>
+        <h3 className="footer-brand">🚗 RevCar</h3>
+      </div>
     </div>
-    <div className="content">{props.children}</div>
+  );
+};
 
-    <div className="footer text-center">
-    <hr />
-
-         <p>Desinged and Developed By</p>
-
-         
-
-         <p>SHEY</p>
-        
-    </div>
-  </div>
-  )
-}
-
-export default DefaultLayout
+export default DefaultLayout;
