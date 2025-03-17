@@ -1,30 +1,67 @@
-const Booking =  require("../models/booking.model");
-const Car =  require("../models/car.model");
+const mongoose = require("mongoose");
+const Booking = require("../models/Booking");
+const Car = require("../models/Car");
 
-const bookingCar = async(data)=>{
-    try {
-        //Save  the new booking
-        const newBooking  = new Booking(data);
-        await newBooking.save();
+const createBooking = async (data) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-        //it will find a car and update the booked time slots
-        const car  = await Car.findOne({_id: data.car});
-        if(!car){
-            throw new Error("Car not found");
-        };
-        car.bookedTimeSlots.push(data.bookedTimeSlots);
-        await car.save();
+  try {
+    // Create booking inside the transaction
+    const booking = await new Booking(data).save({ session });
 
-        return newBooking;
-        
-    } catch (error) {
-        console.log("Booking error",error);
-        throw error;
-        
+    // Update booked time slots in the car model
+    const car = await Car.findById(data.car).session(session);
+    if (!car) {
+      throw new Error("Car not found");
     }
-}
 
+    // Push new booked time slots (ensure uniqueness)
+    car.bookedTimeSlots = [
+      ...car.bookedTimeSlots,
+      ...data.bookedTimeSlots.filter(
+        (slot) =>
+          !car.bookedTimeSlots.some(
+            (existingSlot) =>
+              existingSlot.from === slot.from && existingSlot.to === slot.to
+          )
+      ),
+    ];
 
-module.exports =  {
-    bookingCar
-}
+    await car.save({ session });
+
+    // Commit transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    return booking;
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error(error.message);
+  }
+};
+
+const fetchAllCars = async () => {
+  try {
+    return await Car.find({});
+  } catch (error) {
+    throw new Error("Failed to fetch cars: " + error.message);
+  }
+};
+
+const fetchBookedSlots = async (carId) => {
+  try {
+    const car = await Car.findById(carId);
+    if (!car) throw new Error("Car not found");
+    return car.bookedTimeSlots;
+  } catch (error) {
+    throw new Error("Failed to fetch booked slots: " + error.message);
+  }
+};
+
+module.exports = {
+  createBooking,
+  fetchAllCars,
+  fetchBookedSlots,
+};

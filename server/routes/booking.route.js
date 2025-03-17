@@ -1,14 +1,12 @@
-const router =  require("express").Router;
-const Booking =  require("../models/booking.model");
+const express = require("express");
+const router = express.Router();
 
-router.post("/bookcar" ,  async(req , res)=>{
-    req.body.transactionId =  '1234'
-    try {
-        const newBooking  =  new Booking(req.body);
+const { bookCar, getAllCars, getBookedSlots } = require("../controllers/bookingController");
 
-        await newBooking.save();
-        res.send("Your Booking is Successfull" )
-    } catch (error) {
-        return res.status(400).json(error);
-    }
-})
+router.post("/book", bookCar);
+
+router.get("/cars", getAllCars);
+
+router.get("/booked-slots/:carId", getBookedSlots);
+
+module.exports = router;

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import BookingCar from './pages/BookingCar';
+import UserBookings from './pages/UserBookings';
 import Home from './pages/Home';
 import "antd/dist/reset.css";
 
@@ -16,8 +17,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/bookingCar" element={<BookingCar />} />
           <Route path="/booking/:carid" element={<BookingCar />} />
+          <Route path="/userbookings" element={<UserBookings />} />
+
 
         </Routes>
       </BrowserRouter>
