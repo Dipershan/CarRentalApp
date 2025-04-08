@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 // const dbConnection = require('./db');
 const PORT = process.env.PORT
 const indexRouter =  require("./routes/index");
+const sosRoutes = require("./routes/sos.route");
+
 const cors =  require("cors");
 
 mongoose.connect(
@@ -19,6 +21,8 @@ mongoose.connect(
 app.use(express.json());
 app.use(cors())
 app.use("/", indexRouter);
+app.use("/api/sos", sosRoutes);
+
  
 app.get("/" , (req , res)=>{
     res.json("HelloWorld");
