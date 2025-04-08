@@ -5,9 +5,10 @@ import { useSelector, useDispatch } from "react-redux";
 import DefaultLayout from "../components/DefaultLayout";
 import Spinner from "../components/Spinner";
 import { getAllCars } from "../redux/actions/carsActions";
+
 import moment from "moment";
 import { bookCar } from "../redux/actions/bookingAction";
-import StripeCheckout from "react-stripe-checkout";
+
 
 const { RangePicker } = DatePicker;
 
@@ -23,6 +24,7 @@ function BookingCar() {
   const [driver, setDriver] = useState(false);
   const [totalAmount, setTotalAmount] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [paystackReady, setPaystackReady] = useState(false);
 
   useEffect(() => {
     if (cars.length === 0) {
@@ -42,6 +44,26 @@ function BookingCar() {
     }
     setTotalAmount(amount);
   }, [driver, totalHours, car.rentPerHour]);
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://js.paystack.co/v1/inline.js";
+    script.async = true;
+  
+    script.onload = () => {
+      setPaystackReady(true);
+    };
+  
+    script.onerror = () => {
+      console.error("Failed to load Paystack script");
+    };
+  
+    document.body.appendChild(script);
+  
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+  
 
   function selectTimeSlots(values) {
     setFrom(moment(values[0]).format("MMM DD yyyy HH:mm"));
@@ -62,6 +84,40 @@ function BookingCar() {
     dispatch(bookCar(reqObj));
   }
 
+  function payWithPaystack() {
+    if (!paystackReady || !window.PaystackPop) {
+      alert("Paystack is not loaded yet. Please wait a second and try again.");
+      return;
+    }
+  
+    const handler = window.PaystackPop.setup({
+      key: "pk_test_8c058c2afa628c71c71432cbaf0966a016ff38a7",
+      email: JSON.parse(localStorage.getItem("user")).email,
+      amount: totalAmount * 100,
+      currency: "NGN",
+      ref: "" + Math.floor(Math.random() * 1000000000 + 1),
+      callback: function (response) {
+        const reqObj = {
+          transactionRef: response.reference,
+          user: JSON.parse(localStorage.getItem("user"))._id,
+          car: car._id,
+          totalHours,
+          totalAmount,
+          driverRequired: driver,
+          bookedTimeSlots: { from, to },
+        };
+        dispatch(bookCar(reqObj));
+      },
+      onClose: function () {
+        alert("Payment popup closed");
+      },
+    });
+  
+    handler.openIframe();
+  }
+  
+  
+  
   return (
     <DefaultLayout>
       {loading && <Spinner />}
@@ -113,17 +169,10 @@ function BookingCar() {
                   Driver Required
                 </Checkbox>
                 <h3>Total Amount: ₹{totalAmount}</h3>
-                <StripeCheckout
-                  shippingAddress
-                  token={onToken}
-                  currency="inr"
-                  amount={totalAmount * 100}
-                  stripeKey="pk_test_51R3ZE0AHCpb678fz0H3VZYCewKpvANIZ3Tm09QWW2OxYqLQBo8JuvNGoHgtWEwBe5Jrl6qRdVqYzUZcG1OaBVARi00KG3k1WSA"
-                >
-                  <button className="action-button">
-                    Book Now
-                  </button>
-                </StripeCheckout>
+                <button className="action-button" onClick={payWithPaystack}>
+                Book Now
+              </button>
+
               </>
             )}
           </div>
