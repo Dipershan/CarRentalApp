@@ -51,6 +51,9 @@
   },
   "proxy": "http://localhost:7000",
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@unocss/postcss": "^66.1.0-beta.12",
+    "postcss": "^8.5.3",
+    "unocss": "^66.1.0-beta.12"
   }
 }

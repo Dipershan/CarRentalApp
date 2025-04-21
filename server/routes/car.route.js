@@ -1,9 +1,9 @@
 const router = require("express").Router();
 const carController = require("../controllers/car.controller");
 
-router.get("/getAllCars", carController.getAllCars);
-router.post("/addCar", carController.addCar);
-router.post("/editCar", carController.editCar);
-router.post("/deleteCar", carController.deleteCar);
+router.get("/getallcars", carController.getAllCars);
+router.post("/addcar", carController.addCar);
+router.post("/editcar", carController.editCar);
+router.post("/deletecar", carController.deleteCar);
 
 module.exports = router;

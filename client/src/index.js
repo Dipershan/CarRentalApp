@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from "./redux/store";
+import './uno.css';
 import { Provider } from 'react-redux';
 
 // Create the root for rendering

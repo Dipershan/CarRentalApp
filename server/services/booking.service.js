@@ -1,67 +1,82 @@
 const mongoose = require("mongoose");
-const Booking = require("../models/Booking");
-const Car = require("../models/Car");
+const Booking = require("../models/booking.model");
+const Car = require("../models/car.model");
 
-const createBooking = async (data) => {
+const bookCar = async (data) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    // Create booking inside the transaction
-    const booking = await new Booking(data).save({ session });
+    const {
+      transactionRef,
+      user,
+      car,
+      totalHours,
+      totalAmount,
+      driverRequired,
+      bookedTimeSlots,
+    } = data;
 
-    // Update booked time slots in the car model
-    const car = await Car.findById(data.car).session(session);
-    if (!car) {
-      throw new Error("Car not found");
+    if (!transactionRef) {
+      throw new Error("Transaction reference is missing from Paystack");
     }
 
-    // Push new booked time slots (ensure uniqueness)
-    car.bookedTimeSlots = [
-      ...car.bookedTimeSlots,
-      ...data.bookedTimeSlots.filter(
+    const newBooking = new Booking({
+      user,
+      car,
+      totalHours,
+      totalAmount,
+      driverRequired,
+      bookedTimeSlots,
+      transactionId: transactionRef,
+    });
+
+    await newBooking.save({ session });
+
+    const carToUpdate = await Car.findById(car).session(session);
+    if (!carToUpdate) throw new Error("Car not found");
+
+    carToUpdate.bookedTimeSlots = [
+      ...carToUpdate.bookedTimeSlots,
+      ...[bookedTimeSlots].filter(
         (slot) =>
-          !car.bookedTimeSlots.some(
+          !carToUpdate.bookedTimeSlots.some(
             (existingSlot) =>
               existingSlot.from === slot.from && existingSlot.to === slot.to
           )
       ),
     ];
 
-    await car.save({ session });
+    await carToUpdate.save({ session });
 
-    // Commit transaction
     await session.commitTransaction();
     session.endSession();
 
-    return booking;
+    return newBooking;
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
-    throw new Error(error.message);
+    throw error;
   }
 };
 
-const fetchAllCars = async () => {
-  try {
-    return await Car.find({});
-  } catch (error) {
-    throw new Error("Failed to fetch cars: " + error.message);
-  }
+const getAllCars = async () => {
+  return await Car.find({});
 };
 
-const fetchBookedSlots = async (carId) => {
-  try {
-    const car = await Car.findById(carId);
-    if (!car) throw new Error("Car not found");
-    return car.bookedTimeSlots;
-  } catch (error) {
-    throw new Error("Failed to fetch booked slots: " + error.message);
-  }
+const getBookedSlots = async (carId) => {
+  const car = await Car.findById(carId);
+  if (!car) throw new Error("Car not found");
+  return car.bookedTimeSlots;
+};
+
+const getAllBookings = async () => {
+  return await Booking.find().populate("car");
 };
 
 module.exports = {
-  createBooking,
-  fetchAllCars,
-  fetchBookedSlots,
+  bookCar,
+  getAllCars,
+  getBookedSlots,
+  getAllBookings,
 };

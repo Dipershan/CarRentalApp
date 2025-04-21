@@ -4,6 +4,7 @@ exports.getAllCars = async () => {
     return await Car.find({});
 };
 
+
 exports.addCar = async (carData) => {
     const newCar = new Car(carData);
     return await newCar.save();

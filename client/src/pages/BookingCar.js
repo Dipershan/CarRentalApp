@@ -25,6 +25,22 @@ function BookingCar() {
   const [totalAmount, setTotalAmount] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [paystackReady, setPaystackReady] = useState(false);
+  // const user = JSON.parse(localStorage.getItem("user"));
+
+  const [user, setUser] = useState(null);
+
+useEffect(() => {
+  const storedUser = localStorage.getItem("user");
+  if (!storedUser) {
+    alert("You must be logged in to book a car.");
+    window.location.href = "/login";
+  } else {
+    setUser(JSON.parse(storedUser)); // 👈 THIS LINE is crucial
+  }
+}, []);
+
+  
+  
 
   useEffect(() => {
     if (cars.length === 0) {
@@ -71,20 +87,30 @@ function BookingCar() {
     setTotalHours(values[1].diff(values[0], "hours"));
   }
 
-  function onToken(token) {
-    const reqObj = {
-      token,
-      user: JSON.parse(localStorage.getItem("user"))._id,
-      car: car._id,
-      totalHours,
-      totalAmount,
-      driverRequired: driver,
-      bookedTimeSlots: { from, to },
-    };
-    dispatch(bookCar(reqObj));
-  }
+  // function onToken(token) {
+  //   const reqObj = {
+  //     token,
+  //     user: JSON.parse(localStorage.getItem("user"))._id,
+  //     car: car._id,
+  //     totalHours,
+  //     totalAmount,
+  //     driverRequired: driver,
+  //     bookedTimeSlots: { from, to },
+  //   };
+  //   dispatch(bookCar(reqObj));
+  // }
 
   function payWithPaystack() {
+    const stored = JSON.parse(localStorage.getItem("user"));
+  const user = stored?.user; // ✅ extract the actual user object
+
+  console.log("Parsed user:", user);
+
+    if (!user || !user.email) {
+      alert("User is not logged in or email missing.");
+      return;
+    }
+
     if (!paystackReady || !window.PaystackPop) {
       alert("Paystack is not loaded yet. Please wait a second and try again.");
       return;
@@ -92,14 +118,14 @@ function BookingCar() {
   
     const handler = window.PaystackPop.setup({
       key: "pk_test_8c058c2afa628c71c71432cbaf0966a016ff38a7",
-      email: JSON.parse(localStorage.getItem("user")).email,
+      email: user.email,
       amount: totalAmount * 100,
       currency: "NGN",
       ref: "" + Math.floor(Math.random() * 1000000000 + 1),
       callback: function (response) {
         const reqObj = {
           transactionRef: response.reference,
-          user: JSON.parse(localStorage.getItem("user"))._id,
+          user: user._id,
           car: car._id,
           totalHours,
           totalAmount,
@@ -115,6 +141,7 @@ function BookingCar() {
   
     handler.openIframe();
   }
+  
   
   
   
